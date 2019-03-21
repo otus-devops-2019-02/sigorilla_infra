@@ -67,3 +67,11 @@ gcloud compute instances create reddit-app \
     --restart-on-failure \
     --metadata startup-script-url=https://gist.githubusercontent.com/sigorilla/a10ba37df3f27082240d88a270130c7c/raw/b96823fb28e5b6252edf84e4c293ecd1b8be9d28/startup_script.sh
 ```
+
+Создание правила в файрволе:
+
+```sh
+gcloud compute firewall-rules create default-puma-server \
+    --allow=tcp:9292 \
+    --target-tags=puma-server
+```
