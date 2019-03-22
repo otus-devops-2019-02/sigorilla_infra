@@ -1,5 +1,13 @@
 # sigorilla_infra
 
+```conf
+bastion_IP = 35.207.175.188
+someinternalhost_IP = 10.156.0.3
+
+testapp_IP = 35.197.197.52
+testapp_port = 9292
+```
+
 ## Подключение к `someinternalhost`
 
 ```bash
@@ -29,10 +37,41 @@ Host someinternalhost
 ssh someinternalhost
 ```
 
-```conf
-bastion_IP = 35.207.175.188
-someinternalhost_IP = 10.156.0.3
+По HTTPS сервис доступен по следующему урлу: https://35.207.175.188.xip.io
 
+## Настройка gcloud
+
+Создание инстанса:
+
+```sh
+gcloud compute instances create reddit-app \
+    --boot-disk-size=10GB \
+    --image-family ubuntu-1604-lts \
+    --image-project=ubuntu-os-cloud \
+    --machine-type=g1-small \
+    --tags puma-server \
+    --restart-on-failure \
+    --metadata-from-file startup-script=./startup_script.sh
 ```
 
-По HTTPS сервис доступен по следующему урлу: https://35.207.175.188.xip.io
+Создание инстанса с использование `startup-script-url`:
+
+```sh
+
+gcloud compute instances create reddit-app \
+    --boot-disk-size=10GB \
+    --image-family ubuntu-1604-lts \
+    --image-project=ubuntu-os-cloud \
+    --machine-type=g1-small \
+    --tags puma-server \
+    --restart-on-failure \
+    --metadata startup-script-url=https://gist.githubusercontent.com/sigorilla/a10ba37df3f27082240d88a270130c7c/raw/b96823fb28e5b6252edf84e4c293ecd1b8be9d28/startup_script.sh
+```
+
+Создание правила в файрволе:
+
+```sh
+gcloud compute firewall-rules create default-puma-server \
+    --allow=tcp:9292 \
+    --target-tags=puma-server
+```
