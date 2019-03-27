@@ -75,3 +75,22 @@ gcloud compute firewall-rules create default-puma-server \
     --allow=tcp:9292 \
     --target-tags=puma-server
 ```
+
+## Packer
+
+Скопируйте файл `packer/variables.json.example` в `packer/variables.json` и поменяйте значения переменных.
+
+Проверяем шаблон:
+
+```sh
+cd packer
+packer validate -var-file=./variables.json ubuntu16.json
+```
+
+Собираем образ:
+
+```sh
+packer build -var-file=./variables.json ubuntu16.json
+```
+
+Образ с приложением распологается в `packer/immutable.json`.

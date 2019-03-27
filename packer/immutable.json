@@ -9,9 +9,9 @@
     {
       "type": "googlecompute",
       "project_id": "{{user `project_id`}}",
-      "image_name": "reddit-base-{{timestamp}}",
-      "image_description": "Image with reddit and mongodb",
-      "image_family": "reddit-base",
+      "image_name": "reddit-full-{{timestamp}}",
+      "image_description": "Image with reddit, mongodb and full application",
+      "image_family": "reddit-full",
       "source_image_family": "{{user `source_image_family`}}",
       "zone": "europe-west1-b",
       "ssh_username": "{{user `username`}}",
@@ -21,18 +21,16 @@
       "network": "default",
       "tags": [
         "puma-server"
-      ]
+      ],
+      "metadata": {
+        "startup-script": "cd reddit && puma -d"
+      }
     }
   ],
   "provisioners": [
     {
       "type": "shell",
-      "script": "scripts/install_ruby.sh",
-      "execute_command": "sudo {{.Path}}"
-    },
-    {
-      "type": "shell",
-      "script": "scripts/install_mongodb.sh",
+      "script": "scripts/deploy.sh",
       "execute_command": "sudo {{.Path}}"
     }
   ]
