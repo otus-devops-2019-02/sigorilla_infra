@@ -93,4 +93,11 @@ packer validate -var-file=./variables.json ubuntu16.json
 packer build -var-file=./variables.json ubuntu16.json
 ```
 
-Образ с приложением распологается в `packer/immutable.json`.
+Образ с приложением располагается в `packer/immutable.json`:
+
+```sh
+cd packer
+packer build -var-file=./variables.json immutable.json
+cd -
+./config-scripts/create-reddit-vm.sh
+```
