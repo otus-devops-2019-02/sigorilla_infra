@@ -51,7 +51,7 @@ gcloud compute instances create reddit-app \
     --machine-type=g1-small \
     --tags puma-server \
     --restart-on-failure \
-    --metadata-from-file startup-script=./startup_script.sh
+    --metadata-from-file startup-script=./config-scripts/startup_script.sh
 ```
 
 Создание инстанса с использование `startup-script-url`:
@@ -74,4 +74,30 @@ gcloud compute instances create reddit-app \
 gcloud compute firewall-rules create default-puma-server \
     --allow=tcp:9292 \
     --target-tags=puma-server
+```
+
+## Packer
+
+Скопируйте файл `packer/variables.json.example` в `packer/variables.json` и поменяйте значения переменных.
+
+Проверяем шаблон:
+
+```sh
+cd packer
+packer validate -var-file=./variables.json ubuntu16.json
+```
+
+Собираем образ:
+
+```sh
+packer build -var-file=./variables.json ubuntu16.json
+```
+
+Образ с приложением располагается в `packer/immutable.json`:
+
+```sh
+cd packer
+packer build -var-file=./variables.json immutable.json
+cd -
+./config-scripts/create-reddit-vm.sh
 ```
