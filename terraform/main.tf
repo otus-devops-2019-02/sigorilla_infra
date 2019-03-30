@@ -3,6 +3,10 @@ terraform {
   required_version = "0.11.13"
 }
 
+provider "template" {
+  version = "2.1.0"
+}
+
 provider "google" {
   # Версия провайдера
   version = "2.0.0"
@@ -12,11 +16,20 @@ provider "google" {
   region  = "${var.region}"
 }
 
+data "template_file" "puma_service" {
+  template = "${file("files/puma.service")}"
+
+  vars = {
+    user = "${var.user}"
+  }
+}
+
 resource "google_compute_instance" "app" {
-  name         = "reddit-app"
+  count        = "${var.count}"
+  name         = "${var.name}-app-${count.index}"
   machine_type = "g1-small"
   zone         = "${var.instance_region}"
-  tags         = ["reddit-app"]
+  tags         = ["${var.name}-firewall-tag"]
 
   # определение загрузочного диска
   boot_disk {
@@ -36,18 +49,18 @@ resource "google_compute_instance" "app" {
 
   metadata {
     # путь до публичного ключа
-    ssh-keys = "appuser:${file(var.public_key_path)}"
+    ssh-keys = "${var.user}:${file(var.public_key_path)}"
   }
 
   connection {
     type        = "ssh"
-    user        = "appuser"
+    user        = "${var.user}"
     agent       = false
     private_key = "${file(var.private_key_path)}"
   }
 
   provisioner "file" {
-    source      = "files/puma.service"
+    content     = "${data.template_file.puma_service.rendered}"
     destination = "/tmp/puma.service"
   }
 
@@ -56,8 +69,8 @@ resource "google_compute_instance" "app" {
   }
 }
 
-resource "google_compute_firewall" "firewall_puma" {
-  name = "allow-puma-default"
+resource "google_compute_firewall" "default" {
+  name = "${var.name}-firewall"
 
   # Название сети, в которой действует правило
   network = "default"
@@ -65,18 +78,12 @@ resource "google_compute_firewall" "firewall_puma" {
   # Какой доступ разрешить
   allow {
     protocol = "tcp"
-    ports    = ["9292"]
+    ports    = ["${var.service_port}"]
   }
 
   # Каким адресам разрешаем доступ
   source_ranges = ["0.0.0.0/0"]
 
   # Правило применимо для инстансов с перечисленными тэгами
-  target_tags = ["reddit-app"]
-}
-
-resource "google_compute_project_metadata" "ssh_keys" {
-  metadata {
-    ssh-keys = "appuser1:${file(var.public_key_path)}\nappuser2:${file(var.public_key_path)}"
-  }
+  target_tags = ["${var.name}-firewall-tag"]
 }
