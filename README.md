@@ -101,3 +101,25 @@ packer build -var-file=./variables.json immutable.json
 cd -
 ./config-scripts/create-reddit-vm.sh
 ```
+
+## Terraform
+
+Используем директорию `./terraform`.
+
+Скопируйте файл `terraform.tfvars.example` в `terraform.tfvars` и поменяйте значение переменных.
+
+Проверяем изменения:
+
+```sh
+terraform plan
+```
+
+Применяем изменения:
+
+```sh
+terraform apply
+```
+
+### Изменение существующих значений
+
+Если в веб-интерфейсе добавить какие-то метаданные, например, ssh ключ для пользователя `appuser_web`, то после команды `terraform apply` эти значения будут заменены на значения в конфиге.

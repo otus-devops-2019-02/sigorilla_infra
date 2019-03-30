@@ -8,20 +8,20 @@ provider "google" {
   version = "2.0.0"
 
   # ID проекта
-  project = "sigorilla-otus-devops-infra"
-  region  = "europe-west-1"
+  project = "${var.project}"
+  region  = "${var.region}"
 }
 
 resource "google_compute_instance" "app" {
   name         = "reddit-app"
   machine_type = "g1-small"
-  zone         = "europe-west1-b"
+  zone         = "${var.instance_region}"
   tags         = ["reddit-app"]
 
   # определение загрузочного диска
   boot_disk {
     initialize_params {
-      image = "reddit-base"
+      image = "${var.disk_image}"
     }
   }
 
@@ -36,7 +36,23 @@ resource "google_compute_instance" "app" {
 
   metadata {
     # путь до публичного ключа
-    ssh-keys = "sigorilla:${file("~/.ssh/id_rsa.pub")}"
+    ssh-keys = "appuser:${file(var.public_key_path)}"
+  }
+
+  connection {
+    type        = "ssh"
+    user        = "appuser"
+    agent       = false
+    private_key = "${file(var.private_key_path)}"
+  }
+
+  provisioner "file" {
+    source      = "files/puma.service"
+    destination = "/tmp/puma.service"
+  }
+
+  provisioner "remote-exec" {
+    script = "files/deploy.sh"
   }
 }
 
@@ -57,4 +73,10 @@ resource "google_compute_firewall" "firewall_puma" {
 
   # Правило применимо для инстансов с перечисленными тэгами
   target_tags = ["reddit-app"]
+}
+
+resource "google_compute_project_metadata" "ssh_keys" {
+  metadata {
+    ssh-keys = "appuser1:${file(var.public_key_path)}\nappuser2:${file(var.public_key_path)}"
+  }
 }
