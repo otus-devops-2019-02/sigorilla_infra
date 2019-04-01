@@ -101,3 +101,46 @@ packer build -var-file=./variables.json immutable.json
 cd -
 ./config-scripts/create-reddit-vm.sh
 ```
+
+## Terraform
+
+Используем директорию `./terraform`.
+
+Скопируйте файл `terraform.tfvars.example` в `terraform.tfvars` и поменяйте значение переменных.
+
+Проверяем изменения:
+
+```sh
+terraform plan
+```
+
+Применяем изменения:
+
+```sh
+terraform apply
+```
+
+### Изменение существующих значений
+
+Если в веб-интерфейсе добавить какие-то метаданные, например, ssh ключ для пользователя `appuser_web`, то после команды `terraform apply` эти значения будут заменены на значения в конфиге.
+
+Пример добавления ключей в метаданные:
+
+```tf
+resource "google_compute_project_metadata" "ssh_keys" {
+  metadata {
+    ssh-keys = "appuser1:${file(var.public_key_path)}\nappuser2:${file(var.public_key_path)}"
+  }
+}
+```
+
+### Дублирование инстансов
+
+Если каждый инстанс запускать в виде отдельного `google_compute_instance`, то будет много дублирования кода. Вместо этого стоит использовать `count`.
+
+
+### Изменение стандартного пользователя
+
+В файле переменных можно указать пользователя, из под которого будет запускаться сервис.
+
+Для этого используется провайдер [template](https://www.terraform.io/docs/providers/template/index.html).
