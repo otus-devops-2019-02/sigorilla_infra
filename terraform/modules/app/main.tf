@@ -1,9 +1,9 @@
 resource "google_compute_instance" "app" {
-  count = "${var.count}"
-  name = "${var.name}-app-${count.index}"
+  count        = "${var.count}"
+  name         = "${var.name}-app-${count.index}"
   machine_type = "g1-small"
-  zone = "${var.zone}"
-  tags = ["${var.name}-app"]
+  zone         = "${var.zone}"
+  tags         = ["${var.name}-app"]
 
   boot_disk {
     initialize_params {
@@ -29,12 +29,14 @@ resource "google_compute_address" "app_ip" {
 }
 
 resource "google_compute_firewall" "firewall_puma" {
-  name = "allow-puma-default"
+  name    = "allow-puma-default"
   network = "default"
+
   allow {
     protocol = "tcp"
-    ports = ["${var.service_port}"]
+    ports    = ["${var.service_port}"]
   }
+
   source_ranges = ["0.0.0.0/0"]
-  target_tags = ["${var.name}-app"]
+  target_tags   = ["${var.name}-app"]
 }

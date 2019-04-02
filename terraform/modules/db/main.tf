@@ -1,8 +1,8 @@
 resource "google_compute_instance" "db" {
-  name = "${var.name}-db"
+  name         = "${var.name}-db"
   machine_type = "g1-small"
-  zone = "${var.zone}"
-  tags = ["${var.name}-db"]
+  zone         = "${var.zone}"
+  tags         = ["${var.name}-db"]
 
   boot_disk {
     initialize_params {
@@ -11,8 +11,8 @@ resource "google_compute_instance" "db" {
   }
 
   network_interface {
-    network = "default"
-    access_config {}
+    network       = "default"
+    access_config = {}
   }
 
   metadata {
@@ -21,12 +21,14 @@ resource "google_compute_instance" "db" {
 }
 
 resource "google_compute_firewall" "firewall_mongo" {
-  name = "allow-mongo-default"
+  name    = "allow-mongo-default"
   network = "default"
+
   allow {
     protocol = "tcp"
-    ports = ["27017"]
+    ports    = ["27017"]
   }
+
   target_tags = ["${var.name}-db"]
   source_tags = ["${var.name}-app"]
 }
