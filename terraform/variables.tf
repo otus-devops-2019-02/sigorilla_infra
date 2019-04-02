@@ -16,7 +16,7 @@ variable region {
   default     = "europe-west1"
 }
 
-variable "instance_region" {
+variable "zone" {
   description = "Region of the instance"
   default     = "europe-west1-b"
 }
@@ -38,6 +38,10 @@ variable private_key_path {
   description = "Path to the private key used for ssh access"
 }
 
-variable disk_image {
+variable app_disk_image {
   description = "Disk image"
+}
+
+variable db_disk_image {
+  description = "DB disk image"
 }
