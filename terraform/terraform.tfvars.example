@@ -1,7 +1,1 @@
 project = "your_project_id"
-name = "reddit"
-user = "appuser"
-public_key_path = "~/.ssh/appuser.pub"
-private_key_path = "~/.ssh/appuser"
-app_disk_image = "reddit-app"
-db_disk_image = "reddit-db"

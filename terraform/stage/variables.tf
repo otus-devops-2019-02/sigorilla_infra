@@ -11,6 +11,11 @@ variable "service_port" {
   default     = "9292"
 }
 
+variable "db_port" {
+  description = "DB port"
+  default     = "27017"
+}
+
 variable region {
   description = "Region"
   default     = "europe-west1"

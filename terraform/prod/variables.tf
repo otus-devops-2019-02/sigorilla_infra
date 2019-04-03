@@ -11,6 +11,11 @@ variable "service_port" {
   default     = "9292"
 }
 
+variable "db_port" {
+  description = "DB port"
+  default     = "27017"
+}
+
 variable region {
   description = "Region"
   default     = "europe-west1"
@@ -44,4 +49,8 @@ variable app_disk_image {
 
 variable db_disk_image {
   description = "DB disk image"
+}
+
+variable my_ip {
+  description = "My IP"
 }
