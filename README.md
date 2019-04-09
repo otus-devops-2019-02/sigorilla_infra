@@ -144,3 +144,15 @@ resource "google_compute_project_metadata" "ssh_keys" {
 В файле переменных можно указать пользователя, из под которого будет запускаться сервис.
 
 Для этого используется провайдер [template](https://www.terraform.io/docs/providers/template/index.html).
+
+### Импорт существующей инфраструктуры
+
+```sh
+terraform import google_compute_firewall.firewall_ssh default-allow-ssh
+```
+
+### Модули
+
+Модули располагаются в отдельной директории `terraform/modules`, который подключаются в каждую из конфигураций: `prod` и `stage`.
+
+При этом в каждом модуле можно определить необходимый набор переменных.
