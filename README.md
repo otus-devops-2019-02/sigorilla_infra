@@ -156,3 +156,30 @@ terraform import google_compute_firewall.firewall_ssh default-allow-ssh
 Модули располагаются в отдельной директории `terraform/modules`, который подключаются в каждую из конфигураций: `prod` и `stage`.
 
 При этом в каждом модуле можно определить необходимый набор переменных.
+
+## Ansible
+
+```sh
+ansible all -m ping -i inventory
+ansible all -m ping -i inventory.yml
+```
+
+### Playbook
+
+Если файлы удалены с хоста, то вызов команды `ansible-playbook clone.yml` вызовет изменение директории, поэтому один из статусов будет `changed`.
+
+### Dynamic inventory
+
+Для запуска необходимо в `ansible.cfg` указать путь до исполняемого файла в поле `inventory`.
+
+```sh
+ansible all -m ping
+# dbserver | SUCCESS => {
+#     "changed": false,
+#     "ping": "pong"
+# }
+# appserver | SUCCESS => {
+#     "changed": false,
+#     "ping": "pong"
+# }
+```
