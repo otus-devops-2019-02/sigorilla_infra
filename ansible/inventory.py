@@ -21,7 +21,6 @@ def add_server(result, name, ip):
 def main():
     parser = ArgumentParser(description='Ansible inventory')
     parser.add_argument('--list', action='store_true')
-    parser.add_argument('--host', action=str)
     args = parser.parse_args()
 
     result = {}
