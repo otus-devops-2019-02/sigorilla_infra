@@ -2,3 +2,4 @@ packer/variables.json
 *.tfstate*
 terraform.tfvars
 .terraform
+*.retry
