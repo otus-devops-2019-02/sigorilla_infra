@@ -3,3 +3,4 @@ packer/variables.json
 terraform.tfvars
 .terraform
 *.retry
+ansible/sigorilla-otus-devops-infra-51d16fbfdb2f.json
