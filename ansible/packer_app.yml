@@ -1,0 +1,13 @@
+---
+- name: Install app dependencies
+  hosts: all
+  become: true
+  tasks:
+    - name: Install apt
+      apt:
+        name: "{{ packages }}"
+      vars:
+        packages:
+          - ruby-full
+          - ruby-bundler
+          - build-essential

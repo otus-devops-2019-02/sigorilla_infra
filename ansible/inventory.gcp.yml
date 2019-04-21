@@ -1,0 +1,14 @@
+plugin: gcp_compute
+projects:
+  - sigorilla-otus-devops-infra
+filters:
+auth_kind: serviceaccount
+service_account_file: ./sigorilla-otus-devops-infra-51d16fbfdb2f.json
+hostnames:
+  - name
+groups:
+  app: "'reddit-app' in name"
+  db: "'reddit-db' in name"
+compose:
+  ansible_host: networkInterfaces[0].accessConfigs[0].natIP
+  internal_ip: networkInterfaces[0].networkIP
