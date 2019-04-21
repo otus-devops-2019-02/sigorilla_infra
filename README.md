@@ -83,22 +83,19 @@ gcloud compute firewall-rules create default-puma-server \
 Проверяем шаблон:
 
 ```sh
-cd packer
-packer validate -var-file=./variables.json ubuntu16.json
+packer validate -var-file=./packer/variables.json ./packer/ubuntu16.json
 ```
 
 Собираем образ:
 
 ```sh
-packer build -var-file=./variables.json ubuntu16.json
+packer build -var-file=./packer/variables.json ./packer/ubuntu16.json
 ```
 
 Образ с приложением располагается в `packer/immutable.json`:
 
 ```sh
-cd packer
-packer build -var-file=./variables.json immutable.json
-cd -
+packer build -var-file=./packer/variables.json ./packer/immutable.json
 ./config-scripts/create-reddit-vm.sh
 ```
 
