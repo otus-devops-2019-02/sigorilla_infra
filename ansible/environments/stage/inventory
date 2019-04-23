@@ -1,3 +1,4 @@
+# Not used, see inventory.gcp.yml
 [app]
 appserver ansible_host=146.148.25.83
 

@@ -1,4 +1,4 @@
-db_host: 10.132.15.203
+db_host: "{{ hostvars[groups['db'][0]].internal_ip }}"
 nginx_sites:
   default:
     - listen 80

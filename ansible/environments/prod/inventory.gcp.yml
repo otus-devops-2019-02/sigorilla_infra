@@ -3,7 +3,7 @@ projects:
   - sigorilla-otus-devops-infra
 filters:
 auth_kind: serviceaccount
-service_account_file: ../sigorilla-otus-devops-infra-51d16fbfdb2f.json
+service_account_file: sigorilla-otus-devops-infra-51d16fbfdb2f.json
 hostnames:
   - name
 groups:

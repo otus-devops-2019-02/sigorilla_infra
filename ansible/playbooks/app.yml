@@ -3,9 +3,6 @@
   hosts: app
   become: true
 
-  # vars:
-  #  db_host: "{{ hostvars[groups['db'][0]].internal_ip }}"
-
   roles:
     - app
     - jdauphant.nginx
