@@ -1,0 +1,6 @@
+# Not used, see inventory.gcp.yml
+[app]
+appserver ansible_host=146.148.25.83
+
+[db]
+dbserver ansible_host=35.240.92.72
