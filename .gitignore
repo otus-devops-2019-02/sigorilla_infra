@@ -5,3 +5,13 @@ terraform.tfvars
 *.retry
 ansible/sigorilla-otus-devops-infra-51d16fbfdb2f.json
 jdauphant.nginx
+
+# Vagrant & molecule
+.vagrant/
+*.log
+*.pyc
+.molecule
+.cache
+.pytest_cache
+
+venv
