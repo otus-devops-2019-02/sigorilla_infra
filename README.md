@@ -180,3 +180,29 @@ ansible all -m ping
 #     "ping": "pong"
 # }
 ```
+
+### Run locally
+
+```sh
+cd ansible
+vagrant up
+```
+
+### Tests
+
+Подготовка:
+
+```sh
+cd ansible
+virtualenv venv
+pip install -r requirements.txt
+molecule create
+molecule converge
+```
+
+Запуск тестов и линтеров:
+
+```sh
+molecule verify
+molecule lint
+```
