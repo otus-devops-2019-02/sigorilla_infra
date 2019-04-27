@@ -190,11 +190,14 @@ vagrant up
 
 ### Tests
 
+> Не забудьте установить `virtualenv`.
+
 Подготовка:
 
 ```sh
 cd ansible
 virtualenv venv
+source ./venv/bin/activate
 pip install -r requirements.txt
 molecule create
 molecule converge
